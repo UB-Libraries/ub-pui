@@ -1,14 +1,15 @@
 <!-- <%= ASConstants.VERSION %> -->
 
 <!DOCTYPE html>
-<html lang="<%= AppConfig[:locale] %>">
+<html lang="<%= session[:locale] ? session[:locale] : AppConfig[:locale] %>">
 <head>
 	<%# mdc: new stuff, to address IE 10 and earlier issues with Bootstrap %>
 	<meta charset="utf-8"/>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link href="<%= asset_path('favicon.ico') %>" rel="shortcut icon" type="image/x-icon" />
+	<link href="/assets/img/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 	<title><%=  (@page_title.blank? ? '' : "#{strip_mixed_content(@page_title)} | ") %><%= t('brand.title') %></title>
+	
 	<%= csrf_meta_tags %>
 
 	<%# block cross-origin refer per https://go-to-hellman.blogspot.com/2015/06/protect-reader-privacy-with-referrer.html %>
@@ -18,19 +19,19 @@
 
 	<script>
 	 var APP_PATH = '<%= PrefixHelper.app_prefix("") %>';
+	 var SHOW_IDENTIFIERS_IN_TREE = <%= AppConfig[:pui_display_identifiers_in_resource_tree] %>;
 	</script>
 
-	<%= stylesheet_link_tag    'application', media: 'all' %>
-	<%= javascript_include_tag 'application' %>
+	<%= stylesheet_link_tag    'application.css', media: 'all' %>
+	<%= javascript_include_tag 'application.js' %>
+	<%= stylesheet_link_tag "#{@base_url}/assets/stylesheets/custom.css" %>
 
 	<%= render partial: 'shared/metadata' %>
 
 	<% ASUtils.find_local_directories('public/views/layout_head.html.erb').each do |template| %>
-		<% if File.exists?(template) %>
-			<!-- Begin plugin layout -->
-			<%= render :file => template %>
-			<!-- End plugin layout -->
-		<% end %>
+		<!-- Begin plugin layout -->
+		<%= render :template => ViewHelper.relative_plugin_view_path(template) if File.exists?(template) %>
+		<!-- End plugin layout -->
 	<% end %>
 
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -59,50 +60,53 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
 
-
 </head>
 
+
 <% if request.original_fullpath == '/' %>
-    <body id="home">
+	<body id="home">
   
 <% else %>   
 
-<body>
+<body class="min-h-screen d-flex flex-column">
 
 <% end %>
 
 
+<a href="#content" id="skip-to-content-link">Skip to Content</a>
 
-
-
-	<a href="#content" id="skip-to-content-link">Skip to Content</a>
+	<% ASUtils.find_local_directories('public/views/body_top.html.erb').each do |template| %>
+		<!-- Begin plugin layout -->
+		<%= render :template => ViewHelper.relative_plugin_view_path(template) if File.exists?(template) %>
+		<!-- End plugin layout -->
+	<% end %>
 
 	
+
+	<div class="container-fluid no-pad">
 		<%= render partial: 'shared/header' %>
+		
+	<div class="inner-content-contain"><%= render partial: 'shared/navigation' %></div>
+	
+	</div>
 
 <div class="page">
-<div class="container">
-
+	<div class="container">
 	
-	<section id="content" class="container-fluid">
+	<div id="wrapper">
 		
+		
+	<section id="content" class="container-fluid flex-grow-1">
+		<a id="maincontent" tabindex="-1"></a>
 		<%= flash_messages %>
 		<%= yield %>
 	</section>
 
-
-
-
-
-<script type="text/javascript" >
-		$(".upper-record-details .note-content").each(function(index, element){$(this).readmore(<%= AppConfig[:pui_readmore_max_characters] %>)});
-	</script>
-	
 </div>
-</div>
+	</div>
+	</div>
 
 
-	
 
 	<%= render partial: 'shared/footer' %>
 
@@ -111,13 +115,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 			<script>
 				FRONTEND_URL = "<%= j(AppConfig[:frontend_proxy_url]) %>";
 				RECORD_URI = "<%= j(@result.uri) %>";
-				STAFF_LINK_MODE = "<%= j(AppConfig[:pui_staff_link_mode]) %>";
 			</script>
 		<% end %>
 	<% end %>
-
-
-
 
 </body>
 </html>

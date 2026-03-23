@@ -1,7 +1,6 @@
 <% unless @facets.blank? %>
 <strong class="additional-filters"><%= t('search_results.filter.add')%>: </strong>
-
-
+<dl class="facets">
 
   <%
     preferred_facet_order = %w(repository primary_type agents subjects langcode)
@@ -19,35 +18,41 @@
   %>
 
   <% ordered_facet_types.each do |type| %>
-  
-  <dl class="facets">
-	  
-    <% facet_group = @facets.fetch(type, false) %>
-
-    <% next if facet_group.empty? %>
-    <dt><%= t("search_results.filter.#{type}") %></dt>
-    <% facet_group.each_with_index do |facet, i| %>
-      <% if i == 5 %>
-        <div class="more-facets">
-          <span class="more btn">&or; <%= t('search_results.more_facets') %></span>
-          <div class="below-the-fold">
+    <%
+      facet_group = @facets.fetch(type, false)
+      max_facets_on_load = 5
+    %>
+    <div class="facet">
+      <dt><%= t("search_results.filter.#{type}") %></dt>
+      <% if facet_group.length <= max_facets_on_load %>
+        <% facet_group.each do |facet| %>
+          <%= render partial: 'shared/facet_description', locals: { type: type, facet: facet } %>
+        <% end %>
+      <% else %>
+        <%
+          visible_facets = facet_group.slice(0, max_facets_on_load)
+          hidden_facets = facet_group.slice(max_facets_on_load, facet_group.length - 1)
+        %>
+        <% visible_facets.each do |facet| %>
+          <%= render partial: 'shared/facet_description', locals: { type: type, facet: facet } %>
+        <% end %>
+        <% hidden_facets.each do |facet| %>
+          <%= render partial: 'shared/facet_description', locals: { type: type, facet: facet, container_class: 'more-facets__facets' } %>
+        <% end %>
+        <dd class="more-facets__controls">
+        <%# NOTE: Wrapping buttons in <dd> is semantically imperfect but satisfies the
+            accessibility rule that <div> wrappers inside <dl> can only contain <dt>
+            and <dd> elements as direct children. In the future consider replacing the
+            <dl> structure with <nav>/<ul>/<li> or <section> elements for facets %>
+          <button type="button" class="more-facets__more mb-1 btn btn-sm">
+            <%= t('search_results.more_facets') %> <i class="fa fa-chevron-down"></i>
+          </button>
+          <button type="button" class="more-facets__less mb-1 btn btn-sm">
+            <%= t('search_results.fewer_facets') %> <i class="fa fa-chevron-up"></i>
+          </button>
+        </dd>
       <% end %>
-      <dd>
-        <a href="<%= app_prefix("#{@page_search}&filter_fields[]=#{type}&filter_values[]=#{CGI.escape(facet.key)}") %>"
-           rel="nofollow"
-           title="<%= t('search_results.filter_by')%> '<%= facet.label %>'">
-          <%= facet.label %>
-        </a>
-        <span class="recordnumber"><%= facet.count %></span>
-      </dd>
-    <% end %>
-    <% if facet_group.size > 5 %>
-+        <span class="less btn">&and; <%= t('search_results.fewer_facets') %></span>
-      </div>
-    <% end %>
-    <span class="type-spacer">&nbsp;</span>
-</dl>
-
+    </div>
   <% end %>
-
+</dl>
 <% end %>
