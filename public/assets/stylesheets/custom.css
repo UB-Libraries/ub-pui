@@ -301,14 +301,14 @@ Top Header Brand
 .core-header .inner {
     position: relative;}
         
-.core-header .top .ub-title a span {
-    font: 700 16px More;}
+.core-header .top .ub-logo {
+        background: url(../img/ub-logo-white-horizontal-group.svg) no-repeat;
+        background-size: 230px;}
         
-.core-header .top .ub-title a:before {
-    font: normal 32px ubcms;
-    content: "\e602";
-    margin-right: 3px;}
-            
+.core-header .top .ub-logo {
+        height: 40px;
+        width: 260px;}
+        
 .core-header .top .parent-organizations {
     box-sizing: border-box;
     padding: 18px 0 15px 20px;}
@@ -738,23 +738,17 @@ Dark Blue Main
                                 
             .core-header .top {display: block;}
                 
-            .core-header .top .ub-title a:before {
-                font-size: 28px;
-                margin: 0;}
-                
-            .core-header .top .ub-title a span {
-                font-size: 15px;
-                margin: -3px 0 0 3px;
-                letter-spacing: -0.5px;}
+            .core-header .top .ub-title a {
+              padding: 10px 15px;
+              height: auto;}
+     
+            .core-header .top .ub-logo {background-size: 200px;}
                 
             .core-header .top {background: none}
                 
             .core-header .top .ub-title .arrow,
             .core-header .top .parent-organizations {display: none;}
-                
-            .core-header:not(.alt-level) .top .ub-title a {
-                padding: 0 19px;
-                height: 50px;}
+              
                 
             .top-header .left .site-title {
                 margin-top: 12px;}
@@ -1463,7 +1457,13 @@ ul.contact-nav li {
     content: "\e912";}
     
 
+ @media screen and (max-width: 720px) {		
  
+ .contact {float:none;padding-bottom:0}
+ 
+ .ub-logo-footer {margin-bottom: 30px}
+ 
+ }
 
 /* --------------------------------------------- Media @ 1150px --------------------------------------------- */
 
@@ -1517,24 +1517,24 @@ ul.contact-nav li {
     #navigation .pl-4 {padding-bottom: 20px!important}
             
     li.nav-item.p-2 {
-          padding: 0px 16px !important;
-          border-bottom: 1px dashed #2f9fd0;
-          border-top: 0px solid transparent;}
+        padding: 0px 16px !important;
+        border-bottom: 1px dashed #2f9fd0;
+        border-top: 0px solid transparent;}
          
           
-      .p-2 a {
-          padding: 10px 16px 0 !important;
-          height: 35px;
-          background: #fff;
-          box-sizing: border-box;
-          transition: transform .2s ease;
-          font-size: 15px;
-          font-weight: 500;
-          font-family: Sofia, "Arial", sans-serif;
-          position: relative;
-          z-index: 1;
-          color: #005bbb;
-          display: block;}
+    .p-2 a {
+        padding: 10px 16px 0 !important;
+        height: 35px;
+        background: #fff;
+        box-sizing: border-box;
+        transition: transform .2s ease;
+        font-size: 15px;
+        font-weight: 500;
+        font-family: Sofia, "Arial", sans-serif;
+        position: relative;
+        z-index: 1;
+        color: #005bbb;
+        display: block;}
        
      li.nav-item.p-2:hover,
      li.nav-item.p-2:focus {
@@ -1571,62 +1571,15 @@ ul.contact-nav li {
 
 @media screen and (max-width: 930px) {
 
-#home #content {padding: 0}
+  #home #content {padding: 0}
 
-.search-box {
-     width: 100%;
-     height: auto;
-     margin-top: 0}
-     
-.library-hours {
-             width: 100%;
-             margin: 0
-        }
-         .quicklinks li {
-             display: block;
-             min-height: auto;
-             width: 100%;
-             padding: 0;
-             border: 0;
-             margin-bottom: 20px;
-             border-bottom: 1px solid #ccc;
-             padding-bottom: 20px;
-        }
-         .icon-reserve-room, .icon-best-basic, .icon-video-recording, .icon-equipment, .icon-delivery, .icon-research-guides {
-            display: none
-        }
-         .quicklinks p {
-             padding-top: 7px
-        }
-         .quicklinks h4 {
-             font-size: 18px;
-             display: inline-block;
-             margin: 0
-        }
-         .quicklinks li:last-child {
-            padding-bottom:0 
-        }
-         ul.quicklinks {
-            padding: 20px
-        }
-         .region-quicklinks {
-            padding: 0
-        }
-         .region-quicklinks h3 {
-             background: #666;
-             color: #fff;
-             padding: 10px 0 10px 20px;
-             letter-spacing: 0;
-             text-transform: capitalize;
-             font: 14px/1.2 Sofia,Arial,sans-serif;
-             font-weight: bold;
-        }
-         .quicklinks {
-             margin-top: 0
-        }
-         hr.dotted {
-            display: none
-        }
+  .search-box {
+      width: 100%;
+      height: auto;
+      margin-top: 0}
+  
+  hr.dotted {
+       display: none}
     }
 
 /* --------------------------------------------- Media @ 768px --------------------------------------------- */
@@ -1728,10 +1681,7 @@ ul.contact-nav li {
         display: block;
         margin: 18px 0 0 0}
              
-    .ub-logo {
-        margin-left: 60px;
-        background-size: 118px 13px;
-        padding-bottom: 10px;}
+
              
     .nav-main {
         margin-top: 10px;
